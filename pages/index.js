@@ -33,15 +33,23 @@ function ProfileRelationsBox(propriedades) {
 }
 
 export default function Home() {
-  const [comunidades, setComunidades] = React.useState([{
-    id: '123456',
-    title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }]);
+  const [comunidades, setComunidades] = React.useState([
+    {
+      id: '123456',
+      title: 'Eu odeio acordar cedo',
+      image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
+    },
+    {
+      id: '123457',
+      title: 'Discografias',
+      image: 'https://img10.orkut.br.com/community/f50f08c3f0acf3519578cbc92f81089c.jpg'
+    }
+  ]);
   //const comunidades = comunidades[0];
   //const alteradorDeComunidades = comunidades[1];
-  const usuarioAleatorio = 'camilafernanda';
   //const comunidades = ['Alurakut'];
+  const usuarioAleatorio = 'camilafernanda';
+  
   const pessoasFavoritas = [
     'Samucatavares',
     'tobiasisabella',
@@ -58,10 +66,18 @@ React.useEffect(function(){
   .then(function (respostaDoServidor){
     return respostaDoServidor.json();
   })
-  .then(function(respostaCompleta){
-    setSeguidores(respostaCompleta);
+  .then((seguidoresGit) => {
+    let respostaCompleta = new Array ();
+    seguidoresGit.map((seguidores) => {
+      respostaCompleta.push({
+        id: respostaCompleta.login, 
+        image: respostaCompleta.avatar_url,
+        url: respostaCompleta.html_url
+      });
   })
-}, [])
+    setSeguidores(respostaCompleta);
+    })
+}, []);
 
 // 1 - Criar um box que vai ter um map, baseado nos itens do array
 // 2 - que pegamos do GitHub
@@ -126,12 +142,12 @@ React.useEffect(function(){
         <ProfileRelationsBoxWrapper>  
           <ProfileRelationsBox title="Seguidores" items={seguidores} />
           <ul>
-            {seguidores.map((itemAtual) => {
+            {seguidores.map((respostaCompleta) => {
                     return (
-                      <li key={itemAtual}>
-                        <a href={`https://github.com/${itemAtual}`}>
-                          <img src={itemAtual.image} />
-                          <span>{itemAtual.title}</span>
+                      <li key={respostaCompleta.id}>
+                        <a href={`https://github.com/${respostaCompleta.html_url}`}>
+                          <img src={`https://github.com/${respostaCompleta.avatar_url}.png`} />
+                          <span>{respostaCompleta.id}</span>
                         </a>
                       </li>
                   )})}
